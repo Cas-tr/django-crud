@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <title>Django App</title>
     {% load static %}
+    {% load crispy_forms_tags %}
     <script src="{% static 'bootstrap/js/jquery-3.4.0.js' %}"></script>
-     <script src="{% static 'bootstrap/js/popper.min.js' %}"></script>
-     <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+    <script src="{% static 'bootstrap/js/popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/css/styles.css' %}">
 
 </head>
 <body>
 <section>
-    <nav class="navbar navbar-expand-md bg-info navbar-dark">
+    <nav class="navbar navbar-expand-md bg-danger navbar-dark">
         <!-- Brand -->
         <a class="navbar-brand" href="{% url 'home-page' %}">O'MY ECOMMERCE</a>
 
@@ -34,19 +35,36 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">CONTACT US</a>
                 </li>
-                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'all-products' %}">PRODUCTS</a>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'shop' %}">SHOP</a>
                 </li>
-                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'add-product-page' %}">ADD PRODUCT</a>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'all-products' %}">PRODUCTS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'add-product-page' %}">ADD PRODUCT</a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="{%url 'user-logout' %}">LOGOUT</a>
+                    </li>
+
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'user-registration' %}">REGISTER</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="{% url 'log-in-page' %}">LOGIN</a>
                 </li>
-                 <li class="nav-item">
-                    <a class="nav-link" href="#">REGISTER</a>
+
+                {% endif %}
+
+
+
                 </li>
-                 <li class="nav-item">
-                    <a class="nav-link" href="#">LOGIN</a>
-                </li>
-                 <li class="nav-item">
+
+
+                <li class="nav-item">
                     <a class="nav-link" href="#">BLOG</a>
                 </li>
             </ul>
@@ -55,8 +73,11 @@
 </section>
 
 <section>
+    {% for message in messages %}
+        <p class="text-success">{{ message }}</p>
+    {% endfor %}
     {% block content %}
-    
+
     {% endblock %}
 </section>
 
